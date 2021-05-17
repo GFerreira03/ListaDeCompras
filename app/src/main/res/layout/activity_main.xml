@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@color/white">
+
+
+    <Button
+        android:id="@+id/closeList_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Encerrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toBuyList" />
+
+    <Button
+        android:id="@+id/newItem_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Novo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/closeList_btn"
+        app:layout_constraintTop_toBottomOf="@+id/toBuyList" />
+
+    <TextView
+        android:id="@+id/title_Txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Lista de compras"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/toBuyList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/newItem_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_Txt" />
+
+    <TextView
+        android:id="@+id/total_Txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0,00"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newItem_btn"
+        app:layout_constraintTop_toBottomOf="@+id/toBuyList" />
+</androidx.constraintlayout.widget.ConstraintLayout>
