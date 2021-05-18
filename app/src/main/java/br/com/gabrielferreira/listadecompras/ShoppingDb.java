@@ -2,11 +2,15 @@ package br.com.gabrielferreira.listadecompras;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingDb extends SQLiteOpenHelper {
 
@@ -16,10 +20,9 @@ public class ShoppingDb extends SQLiteOpenHelper {
     private static final String ID = "id";
     private static final String QUANTITY = "quantity";
     private static final String NAME = "name";
-    private static final String DONE = "done";
     private static ShoppingDb shoppingDb;
 
-    private ShoppingDb (Context context){
+    public ShoppingDb (Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -30,13 +33,32 @@ public class ShoppingDb extends SQLiteOpenHelper {
         return shoppingDb;
     }
 
+    public List<Item> getAllItems(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor items = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        List<Item> itemList = new ArrayList<>();
+        try {
+            if (items.moveToFirst()){
+                do {
+                    Item item = new Item (items.getInt(items.getColumnIndex(QUANTITY)),
+                                          items.getString(items.getColumnIndex(NAME)));
+                    itemList.add(item);
+                } while (items.moveToNext());
+            }
+        } catch (Exception e){
+            Log.d("Search error", e.toString());
+        } finally {
+            items.close();
+        }
+        return itemList;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + " ("
-                + ID + "INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + QUANTITY + "INTEGER, "
-                + NAME + "TEXT NOT NULL, "
-                + DONE + "TINYINT);");
+                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + QUANTITY + " TEXT NOT NULL, "
+                + NAME + " TEXT NOT NULL);");
     }
 
     @Override
@@ -44,20 +66,16 @@ public class ShoppingDb extends SQLiteOpenHelper {
 
     }
 
-    public void addItem (Item item){
-        SQLiteDatabase db = getWritableDatabase();
+    public boolean addItem (Item item){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(NAME, item.name);
+        values.put(QUANTITY, item.quantity);
+        long result = db.insert(TABLE_NAME, null, values);
 
-        db.beginTransaction();
-        try {
-            ContentValues values = new ContentValues();
-            values.put(QUANTITY, item.quantity);
-            values.put(NAME, item.name);
-            db.insertOrThrow(TABLE_NAME, null, values);
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-            Log.d("Adicionando ao BD", e.toString());
-        } finally {
-            db.endTransaction();
-        }
+        if (result == -1)
+            return false;
+
+        return true;
     }
 }
