@@ -34,8 +34,6 @@ public class MainActivity extends AppCompatActivity {
     ShoppingDb db;
     Cursor cursor;
 
-    CustomAdapter adapter;
-
     ArrayList<String> arrayList;
 
     @Override
@@ -103,50 +101,6 @@ public class MainActivity extends AppCompatActivity {
            for(Item i : itemList){
                 arrayList.add(i.getQuantity() + " | " + i.getName());
            }
-        }
-    }
-
-    //Custom Adapter
-    public class CustomAdapter extends BaseAdapter{
-        private List<Item> items;
-        private Activity activity;
-
-        public CustomAdapter(List<Item> items, Activity activity){
-            this.items = items;
-            this.activity = activity;
-        }
-
-        @Override
-        public int getCount() {
-            return items.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return items.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            @SuppressLint("ViewHolder")
-            View v = activity.getLayoutInflater().inflate(R.layout.row,
-                     viewGroup,
-                    false);
-            Item item = items.get(i);
-
-            TextView quantity = (TextView) v.findViewById(R.id.quantity_text);
-            TextView name = (TextView) v.findViewById(R.id.itemName_text);
-
-            name.setText(item.getName());
-            quantity.setText(item.getQuantity());
-
-            return v;
-
         }
     }
 }
