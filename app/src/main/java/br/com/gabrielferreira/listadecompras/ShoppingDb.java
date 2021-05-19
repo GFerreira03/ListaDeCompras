@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ShoppingDb extends SQLiteOpenHelper {
 
+
     private static final String DATABASE_NAME = "ShoppingList";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_NAME = "Items";
@@ -25,13 +26,10 @@ public class ShoppingDb extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized ShoppingDb getInstance(Context context){
-        if (shoppingDb == null){
-            shoppingDb = new ShoppingDb(context.getApplicationContext());
-        }
-        return shoppingDb;
-    }
-
+    /**
+     * Armazena todos os itens do MYSQLite em uma variável.
+     * @return Uma variável com os itens armazenados.
+     */
     public List<Item> getAllItems(){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor items = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
@@ -65,6 +63,11 @@ public class ShoppingDb extends SQLiteOpenHelper {
 
     }
 
+    /**
+     * Adiciona um item a lista
+     * @param item Item a ser adicionado
+     * @return True caso tenha conseguido adicionar, false caso tenha falhado.
+     */
     public boolean addItem (Item item){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -79,12 +82,19 @@ public class ShoppingDb extends SQLiteOpenHelper {
         return true;
     }
 
+    /**
+     * Deleta um item da lista e banco de dados.
+     * @param item Item a ser deletado.
+     */
     public void deleteItem(Item item){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.delete(TABLE_NAME, "ID = ?", new String[]{String.valueOf(item.getHash())});
         getAllItems();
     }
 
+    /**
+     * Deleta todos os itens da tabela.
+     */
     public void deleteAll(){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.execSQL("DELETE FROM " + TABLE_NAME);

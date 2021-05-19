@@ -17,6 +17,7 @@ public class Item {
         return name;
     }
 
+    //Gera um hash baseado na quantidade e nome do item.
     public Item(int quantity, String name) {
         this.quantity = quantity;
         this.name = name;

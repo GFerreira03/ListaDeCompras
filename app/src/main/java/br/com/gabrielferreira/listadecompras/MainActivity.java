@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private Button endBtn;
+    private Button clearBtn;
     private Button newItemBtn;
 
     private EditText quantityTxt;
@@ -41,13 +41,14 @@ public class MainActivity extends AppCompatActivity {
         quantityTxt = (EditText) findViewById(R.id.quantity_Input);
         itemNameTxt = (EditText) findViewById(R.id.itemName_Input);
 
-        endBtn = (Button) findViewById(R.id.closeList_btn);
+        clearBtn = (Button) findViewById(R.id.closeList_btn);
         newItemBtn = (Button) findViewById(R.id.newItem_btn);
 
         listView = findViewById(R.id.toBuyList);
 
         db = new ShoppingDb(this);
 
+        //Criar novo item na lista
         newItemBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,7 +56,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        endBtn.setOnClickListener(new View.OnClickListener() {
+        //Limpar a lista
+        clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 db.deleteAll();
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Deletar somente item clicado
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -79,10 +82,12 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-
         refreshList();
     }
 
+    /**
+     * Adiciona um novo item a lista de compras.
+     */
     private void newItem() {
 
         if (!TextUtils.isEmpty(itemNameTxt.getText().toString())) {
@@ -105,6 +110,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Atualiza a lista de compras.
+     */
     private void refreshList(){
 
         itemList = db.getAllItems();
@@ -112,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         if (itemList != null){
            ArrayList arrayList = new ArrayList<String>();
            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, arrayList);
+                    R.layout.row, arrayList);
 
            listView.setAdapter(adapter);
            for(Item i : itemList){

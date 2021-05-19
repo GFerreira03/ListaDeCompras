@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#fff"
     tools:context=".MainActivity"
     android:padding="16dp">
 
@@ -13,7 +13,10 @@
         android:id="@+id/closeList_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Encerrar"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_selector"
+        android:text="Limpar"
+        android:textColor="@color/light_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newItem_btn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -23,7 +26,10 @@
         android:id="@+id/newItem_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_selector"
         android:text="Novo"
+        android:textColor="@color/light_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -33,8 +39,12 @@
         android:id="@+id/title_Txt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-light"
         android:text="Lista de compras"
         android:textAlignment="center"
+        android:textColor="@color/light_green"
+        android:textSize="22dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -47,8 +57,12 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/itemName_Input"
         app:layout_constraintEnd_toEndOf="parent"
+        android:divider="@null"
+        android:dividerHeight="4dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_Txt" />
+        app:layout_constraintTop_toBottomOf="@+id/title_Txt"
+        />
+
 
     <EditText
         android:id="@+id/quantity_Input"
@@ -57,6 +71,9 @@
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="number"
+        android:backgroundTint="@color/light_green"
+        android:hint="Quantidade"
+        android:fontFamily="sans-serif-condensed-light"
         app:layout_constraintBottom_toTopOf="@+id/closeList_btn"
         app:layout_constraintEnd_toStartOf="@+id/itemName_Input"
         app:layout_constraintHorizontal_bias="0.5"
@@ -70,7 +87,9 @@
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:hint="Nome do item"
+        android:fontFamily="sans-serif-condensed-light"
         android:inputType="text"
+        android:backgroundTint="@color/light_green"
         app:layout_constraintBottom_toTopOf="@+id/newItem_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
