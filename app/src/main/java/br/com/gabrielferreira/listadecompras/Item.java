@@ -1,8 +1,13 @@
 package br.com.gabrielferreira.listadecompras;
 
 public class Item {
-    public final int quantity;
-    public final String name;
+    private final int quantity;
+    private final String name;
+    private final int hash;
+
+    public int getHash() {
+        return hash;
+    }
 
     public int getQuantity() {
         return quantity;
@@ -15,13 +20,11 @@ public class Item {
     public Item(int quantity, String name) {
         this.quantity = quantity;
         this.name = name;
+        this.hash = (quantity + name).hashCode();
     }
 
     @Override
     public String toString() {
-        return "Item{" +
-                "quantity='" + quantity + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return quantity + " | " + name;
     }
 }

@@ -6,8 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +54,8 @@ public class ShoppingDb extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("CREATE TABLE " + TABLE_NAME + " ("
-                + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
+                + ID + " INTEGER PRIMARY KEY, "
                 + QUANTITY + " TEXT NOT NULL, "
                 + NAME + " TEXT NOT NULL);");
     }
@@ -69,13 +68,26 @@ public class ShoppingDb extends SQLiteOpenHelper {
     public boolean addItem (Item item){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(NAME, item.name);
-        values.put(QUANTITY, item.quantity);
+        values.put(NAME, item.getName());
+        values.put(QUANTITY, item.getQuantity());
+        values.put(ID, item.getHash());
         long result = db.insert(TABLE_NAME, null, values);
 
         if (result == -1)
             return false;
 
         return true;
+    }
+
+    public void deleteItem(Item item){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.delete(TABLE_NAME, "ID = ?", new String[]{String.valueOf(item.getHash())});
+        getAllItems();
+    }
+
+    public void deleteAll(){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.execSQL("DELETE FROM " + TABLE_NAME);
+        getAllItems();
     }
 }

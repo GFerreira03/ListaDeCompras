@@ -1,22 +1,18 @@
 package br.com.gabrielferreira.listadecompras;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.database.Cursor;
-import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -35,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     Cursor cursor;
 
     ArrayList<String> arrayList;
+    List<Item> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +55,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        fillList();
-       /* List<Item> items = db.getAllItems();
-        if (items != null){
-            arrayList = new ArrayList<String>();
-            adapter = new CustomAdapter(items, this);
-        }*/
+        endBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.deleteAll();
+                refreshList();
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Tem certeza que deseja deletar " + itemList.get(pos).getName() + "?")
+                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        db.deleteItem(itemList.get(pos));
+                        refreshList();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
+        refreshList();
     }
 
     private void newItem() {
@@ -79,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (db.addItem(new Item(quantity, name))) {
-                fillList();
+                refreshList();
                 itemNameTxt.setText("");
                 quantityTxt.setText("");
             }
@@ -88,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void fillList(){
+    private void refreshList(){
 
-        List<Item> itemList = db.getAllItems();
+        itemList = db.getAllItems();
 
         if (itemList != null){
            ArrayList arrayList = new ArrayList<String>();
@@ -99,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
            listView.setAdapter(adapter);
            for(Item i : itemList){
-                arrayList.add(i.getQuantity() + " | " + i.getName());
+                arrayList.add(i);
            }
         }
     }
