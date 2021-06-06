@@ -12,11 +12,15 @@ O aplicativo foi desenvolvido no Android Studio na linguagem Java, utiliza-se do
 
 ### Adicionar item na lista
 
-Para se adicionar um item na lista, basta digitar a quantidade e o nome do item em suas respectivas caixas de texto.
+Para se adicionar um item na lista, basta digitar a quantidade e o nome do item em suas respectivas caixas de texto e clicar em "Novo".
+
+![](imgs/Add.png)
 
 ### Remover um item da lista
 
 Para remover um único item da lista, basta apenas clicar no item a ser removido e confirmar a opção.
+
+![](imgs/RemoveOne.png)
 
 ### Limpar a lista
 
